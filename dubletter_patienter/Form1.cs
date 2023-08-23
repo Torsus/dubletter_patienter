@@ -69,7 +69,26 @@ namespace dubletter_patienter
             Sql = "SELECT ROW_NUMBER() OVER(ORDER BY[Index] Desc) AS RowNumber,[Index],[Personal number],[Familyname],[First Name] FROM[Klingen].[dbo].[Patients] WHERE[Personal number] IN(SELECT[Personal number] FROM[Klingen].[dbo].[Patients] GROUP BY[Personal number] HAVING COUNT(*) > 1)";
             Datacontainer.command = new SqlCommand(Sql, Datacontainer.cnn);
             Datacontainer.command.CommandType = CommandType.Text;
-            int antal = (int)Datacontainer.command.ExecuteScalar();
+            SqlDataReader reader = Datacontainer.command.ExecuteReader();
+            while (reader.Read())
+            {
+
+                Datacontainer.Index = (int)reader.GetValue(1);
+                Datacontainer.personnummer = (String)reader.GetValue(2);
+                //Datacontainer.Familyname = (String)reader.GetValue(2);
+                //Datacontainer.fornamn = (String)reader.GetValue(3);
+                //Datacontainer.Signature = (String)reader.GetValue(6);
+                //int tmpfamnum;
+                //tmpfamnum = (int)reader.GetValue(7);
+                //Datacontainer.Familjenummer = tmpfamnum.ToString();
+                //Datacontainer.Indexarray.Add((int)reader.GetValue(0));
+                //Datacontainer.personnummerarray.Add((String)reader.GetValue(1));
+                //Datacontainer.Familynamearray.Add((String)reader.GetValue(2));
+                //Datacontainer.Fornamnarray.Add((String)reader.GetValue(3));
+            }
+
+            reader.Close();
+
         }
     }
 }

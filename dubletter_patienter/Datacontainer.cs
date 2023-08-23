@@ -13,7 +13,9 @@ namespace dubletter_patienter
         public static string anvandarnamn;
         public static string losen;
         public static string connectsource;
+        public static string personnummer;
         public static SqlConnection cnn;
         public static SqlCommand command, command2;
+        public static int Index;
     }
 }
