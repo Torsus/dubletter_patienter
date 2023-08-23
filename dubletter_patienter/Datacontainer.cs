@@ -14,5 +14,6 @@ namespace dubletter_patienter
         public static string losen;
         public static string connectsource;
         public static SqlConnection cnn;
+        public static SqlCommand command, command2;
     }
 }

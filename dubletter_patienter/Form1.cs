@@ -46,14 +46,13 @@ namespace dubletter_patienter
             Datacontainer.connectionString = @Datacontainer.connectsource + "User ID=" + textBox1.Text + ";Password=" + textBox2.Text + "";
             Datacontainer.cnn = new SqlConnection(Datacontainer.connectionString);
             Datacontainer.cnn.Open();
-            //   MessageBox.Show("Connection Open  !");
             string message = "Connection Open  !";
             string title = "";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result = MessageBox.Show(message, title, buttons);
             if (result == DialogResult.OK)
             {
-                this.Close();
+                button2.Enabled = true;
             }
             else
             {
@@ -62,6 +61,15 @@ namespace dubletter_patienter
 
 
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            String Sql;
+            Sql = "SELECT ROW_NUMBER() OVER(ORDER BY[Index] Desc) AS RowNumber,[Index],[Personal number],[Familyname],[First Name] FROM[Klingen].[dbo].[Patients] WHERE[Personal number] IN(SELECT[Personal number] FROM[Klingen].[dbo].[Patients] GROUP BY[Personal number] HAVING COUNT(*) > 1)";
+            Datacontainer.command = new SqlCommand(Sql, Datacontainer.cnn);
+            Datacontainer.command.CommandType = CommandType.Text;
+            int antal = (int)Datacontainer.command.ExecuteScalar();
         }
     }
 }
