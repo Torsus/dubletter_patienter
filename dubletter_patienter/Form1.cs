@@ -46,8 +46,22 @@ namespace dubletter_patienter
             Datacontainer.connectionString = @Datacontainer.connectsource + "User ID=" + textBox1.Text + ";Password=" + textBox2.Text + "";
             Datacontainer.cnn = new SqlConnection(Datacontainer.connectionString);
             Datacontainer.cnn.Open();
-            MessageBox.Show("Connection Open  !");
-           
+            //   MessageBox.Show("Connection Open  !");
+            string message = "Connection Open  !";
+            string title = "";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result = MessageBox.Show(message, title, buttons);
+            if (result == DialogResult.OK)
+            {
+                this.Close();
+            }
+            else
+            {
+                // Do something
+            }
+
+
+
         }
     }
 }
