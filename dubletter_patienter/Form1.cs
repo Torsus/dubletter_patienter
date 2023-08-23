@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace dubletter_patienter
 {
@@ -65,26 +67,48 @@ namespace dubletter_patienter
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+            // Start a new workbook in Excel.
+            Excel.Application oXL;
+            Excel._Workbook oWB;
+            Excel._Worksheet oSheet;
+            Excel.Range oRng;
+
+            oXL = new Excel.Application();
+            oXL.Visible = true;
+
+            //Get a new workbook.
+            oWB = (Excel._Workbook)(oXL.Workbooks.Add(Missing.Value));
+            oSheet = (Excel._Worksheet)oWB.ActiveSheet;
+
+            //Add table headers going cell by cell.
+            oSheet.Cells[1, 1] = "Index";
+            oSheet.Cells[1, 2] = "Personnummer";
+            oSheet.Cells[1, 3] = "Familyname";
+            oSheet.Cells[1, 4] = "Förnamn";
+
             String Sql;
             Sql = "SELECT ROW_NUMBER() OVER(ORDER BY[Index] Desc) AS RowNumber,[Index],[Personal number],[Familyname],[First Name] FROM[Klingen].[dbo].[Patients] WHERE[Personal number] IN(SELECT[Personal number] FROM[Klingen].[dbo].[Patients] GROUP BY[Personal number] HAVING COUNT(*) > 1)";
             Datacontainer.command = new SqlCommand(Sql, Datacontainer.cnn);
             Datacontainer.command.CommandType = CommandType.Text;
             SqlDataReader reader = Datacontainer.command.ExecuteReader();
+            int radnummer;
+            radnummer = 1;
             while (reader.Read())
             {
 
                 Datacontainer.Index = (int)reader.GetValue(1);
                 Datacontainer.personnummer = (String)reader.GetValue(2);
-                //Datacontainer.Familyname = (String)reader.GetValue(2);
-                //Datacontainer.fornamn = (String)reader.GetValue(3);
-                //Datacontainer.Signature = (String)reader.GetValue(6);
-                //int tmpfamnum;
-                //tmpfamnum = (int)reader.GetValue(7);
-                //Datacontainer.Familjenummer = tmpfamnum.ToString();
-                //Datacontainer.Indexarray.Add((int)reader.GetValue(0));
-                //Datacontainer.personnummerarray.Add((String)reader.GetValue(1));
-                //Datacontainer.Familynamearray.Add((String)reader.GetValue(2));
-                //Datacontainer.Fornamnarray.Add((String)reader.GetValue(3));
+                Datacontainer.Familyname = (String)reader.GetValue(3);
+                Datacontainer.fornamn = (String)reader.GetValue(4);
+
+                //För nu över till excel!
+                oSheet.Cells[radnummer,1] = Datacontainer.Index;
+                oSheet.Cells[radnummer,2] = Datacontainer.personnummer;
+                oSheet.Cells[radnummer,3] = Datacontainer.Familyname;
+                oSheet.Cells[radnummer,4] = Datacontainer.fornamn;
+                radnummer++;
+
             }
 
             reader.Close();
