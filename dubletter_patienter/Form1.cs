@@ -38,7 +38,7 @@ namespace dubletter_patienter
 
         //private void radioButton2_CheckedChanged(object sender, EventArgs e)
         //{
-        //    Datacontainer.connectsource = "Data Source=Klingen-test-su-db,62468; Initial Catalog = Klingen_Test;";
+        ///    Datacontainer.connectsource = "Data Source=Klingen-test-su-db,62468; Initial Catalog = Klingen_Test;";
         //}
 
         private void button1_Click(object sender, EventArgs e)
